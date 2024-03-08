@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import SimpleMDE from "react-simplemde-editor";
+import dynamic from "next/dynamic";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -14,6 +14,11 @@ import { useToast } from "@/components/ui/use-toast";
 import { createIssueSchema } from "@/app/validateSchema";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import Spinner from "@/app/components/Spinner";
+
+// disable ssr loading
+const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
+  ssr: false,
+});
 
 // zod 提供的方法，可以将 schema 转为 ts type
 type FormData = z.infer<typeof createIssueSchema>;

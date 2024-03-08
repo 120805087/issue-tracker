@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Table,
   TableBody,
@@ -7,11 +6,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Issue } from "@prisma/client";
 import { apiBase } from "@/lib/apiBase";
+import { Issue } from "@prisma/client";
+import Link from "next/link";
 import IssueStatusBadge from "../components/IssueStatus";
 import ActionButton from "./ActionButton";
-import Link from "next/link";
 
 const IssuePage = async () => {
   // 方法一：
