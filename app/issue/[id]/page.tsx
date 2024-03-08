@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import dayjs from "dayjs";
 import Markdown from "react-markdown";
 import prisma from "@/prisma/client";
-import IssueStatusBadge from "@/app/components/IssueStatus";
+import { IssueStatusBadge } from "@/app/components";
 
 interface Props {
   params: {

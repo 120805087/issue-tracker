@@ -9,7 +9,7 @@ import {
 import { apiBase } from "@/lib/apiBase";
 import { Issue } from "@prisma/client";
 import Link from "next/link";
-import IssueStatusBadge from "../components/IssueStatus";
+import { IssueStatusBadge } from "@/app/components";
 import ActionButton from "./ActionButton";
 
 const IssuePage = async () => {

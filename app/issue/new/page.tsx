@@ -1,19 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
-import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { ErrorMessage, Spinner } from "@/app/components";
+import { createIssueSchema } from "@/app/validateSchema";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { createIssueSchema } from "@/app/validateSchema";
-import ErrorMessage from "@/app/components/ErrorMessage";
-import Spinner from "@/app/components/Spinner";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { z } from "zod";
 
 // disable ssr loading
 const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
