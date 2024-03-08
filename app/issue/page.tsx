@@ -11,6 +11,7 @@ import { Issue } from "@prisma/client";
 import { apiBase } from "@/lib/apiBase";
 import IssueStatusBadge from "../components/IssueStatus";
 import ActionButton from "./ActionButton";
+import Link from "next/link";
 
 const IssuePage = async () => {
   // 方法一：
@@ -39,7 +40,7 @@ const IssuePage = async () => {
             {issues.map((issue: Issue) => (
               <TableRow key={issue.id}>
                 <TableCell className="font-medium">
-                  {issue.title}
+                  <Link href={`/issue/${issue.id}`}>{issue.title}</Link>
                   <div className="block md:hidden">
                     <IssueStatusBadge status={issue.status} />
                   </div>
