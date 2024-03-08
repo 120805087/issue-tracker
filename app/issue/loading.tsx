@@ -7,20 +7,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Issue } from "@prisma/client";
-import { apiBase } from "@/lib/apiBase";
-import IssueStatusBadge from "../components/IssueStatus";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import ActionButton from "./ActionButton";
 
-const IssuePage = async () => {
-  // 方法一：
-  // const res = await import("@/app/api/issue/route");
-  // const issues = await (await res.GET()).json();
-
-  // 方法二：
-  const res = await fetch(`${apiBase()}/api/issue`);
-  const issues = await res.json();
-
+const issueLoadingPage = () => {
+  const issues = [1, 2, 3, 4];
   return (
     <div>
       <ActionButton />
@@ -36,19 +28,19 @@ const IssuePage = async () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {issues.map((issue: Issue) => (
-              <TableRow key={issue.id}>
+            {issues.map((issue) => (
+              <TableRow key={issue}>
                 <TableCell className="font-medium">
-                  {issue.title}
+                  <Skeleton />
                   <div className="block md:hidden">
-                    <IssueStatusBadge status={issue.status} />
+                    <Skeleton />
                   </div>
                 </TableCell>
                 <TableCell className="hidden md:table-cell">
-                  <IssueStatusBadge status={issue.status} />
+                  <Skeleton />
                 </TableCell>
                 <TableCell className="hidden md:table-cell">
-                  {issue.description}
+                  <Skeleton />
                 </TableCell>
               </TableRow>
             ))}
@@ -59,4 +51,4 @@ const IssuePage = async () => {
   );
 };
 
-export default IssuePage;
+export default issueLoadingPage;
