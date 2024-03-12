@@ -7,7 +7,7 @@ const IssueEditButton = ({ issueId }: { issueId: number }) => {
   return (
     <Button>
       <FaRegEdit className="mr-1" />
-      <Link href={`/issue/${issueId}/edit`}>Edit</Link>
+      <Link href={`/issue/${issueId}/edit`}>Edit Issue</Link>
     </Button>
   );
 };
