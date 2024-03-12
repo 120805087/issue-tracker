@@ -46,6 +46,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
         await axios.post("/api/issue", data);
       }
       router.push("/issue");
+      router.refresh();
     } catch (error) {
       toast({
         variant: "destructive",
