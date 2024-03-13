@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import Navbar from "./Navbar";
 import { Toaster } from "@/components/ui/toaster";
 import AuthProvider from "./auth/AuthProvider";
+import ReactQueryProvider from "./reactQuery/ReactQueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,11 +21,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <AuthProvider>
-          <Navbar />
-          <main className="p-6">{children}</main>
-          <Toaster />
-        </AuthProvider>
+        <ReactQueryProvider>
+          <AuthProvider>
+            <Navbar />
+            <main className="p-6">{children}</main>
+            <Toaster />
+          </AuthProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );
