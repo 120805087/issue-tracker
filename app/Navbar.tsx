@@ -54,7 +54,9 @@ const Navbar = () => {
           ))}
         </ul>
       </div>
-      <div className="ms-auto">{LoginStatus()}</div>
+      <div className="ms-auto">
+        <LoginStatus />
+      </div>
     </nav>
   );
 };
@@ -70,7 +72,8 @@ const LoginStatus = () => {
       </div>
     );
 
-  if (status === "authenticated") return DropdownLogoutMenu(session);
+  if (status === "authenticated")
+    return <DropdownLogoutMenu session={session} />;
 
   return (
     <Link className="link-style" href={"/api/auth/signin"}>
@@ -79,7 +82,7 @@ const LoginStatus = () => {
   );
 };
 
-const DropdownLogoutMenu = (session: Session) => {
+const DropdownLogoutMenu = ({ session }: { session: Session }) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
