@@ -1,10 +1,22 @@
 "use client";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/app/components";
+import classNames from "classnames";
+import { Session } from "next-auth";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
 import { FaBug } from "react-icons/fa";
-import classNames from "classnames";
+import { MdLogout } from "react-icons/md";
 
 const Navbar = () => {
   const links = [
@@ -21,26 +33,76 @@ const Navbar = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="flex items-center space-x-6 h-16 border-b px-6">
-      <Link href="/">
-        <FaBug />
-      </Link>
-      <ul className="flex space-x-6">
-        {links.map(({ label, href }) => (
-          <Link
-            key={href}
-            href={href}
-            className={classNames("transition-colors", {
-              "text-zinc-500": href !== pathname,
-              "text-zinc-900": href === pathname,
-              "hover:text-zinc-800": true,
-            })}
-          >
-            {label}
-          </Link>
-        ))}
-      </ul>
+    <nav className="flex items-center border-b px-6 h-16">
+      <div className="flex  space-x-6">
+        <Link href="/" className="flex items-center">
+          <FaBug />
+        </Link>
+        <ul className="flex space-x-6">
+          {links.map(({ label, href }) => (
+            <li key={href}>
+              <Link
+                href={href}
+                className={classNames({
+                  "link-style": true,
+                  "!text-zinc-900": href === pathname,
+                })}
+              >
+                {label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="ms-auto">{LoginStatus()}</div>
     </nav>
+  );
+};
+
+const LoginStatus = () => {
+  const { data: session, status } = useSession();
+  console.log(status);
+
+  if (status === "loading")
+    return (
+      <div className="w-12 rounded-full">
+        <Skeleton />
+      </div>
+    );
+
+  if (status === "authenticated") return DropdownLogoutMenu(session);
+
+  return (
+    <Link className="link-style" href={"/api/auth/signin"}>
+      Login
+    </Link>
+  );
+};
+
+const DropdownLogoutMenu = (session: Session) => {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Avatar className="cursor-pointer">
+          <AvatarImage
+            src={session.user?.image!}
+            alt="@shadcn"
+            referrerPolicy="no-referrer"
+          />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>{session.user?.email}</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <MdLogout className="mr-2 h-4 w-4" />
+          <Link href={"/api/auth/signout"} className="w-full">
+            Logout
+          </Link>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
