@@ -10,31 +10,35 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { User } from "@prisma/client";
+import { Issue, User } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-function SelectUser() {
-  const { data: users, isLoading } = useQuery<User[]>({
-    queryKey: ["users"],
-    queryFn: () => axios.get("/api/user").then((res) => res.data),
-    select: (data) => {
-      console.log("data", data);
-      return data;
-    },
-    staleTime: 60 * 1000, // 1 minute cache
-  });
+function SelectUser({ issue }: { issue: Issue }) {
+  const { data: users, isLoading } = useUser();
 
   if (isLoading) return <Skeleton className="w-[280px] h-10" />;
 
+  const handleValueChange = async (userId: string) => {
+    try {
+      await axios.patch(`/api/issue/${issue.id}`, {
+        assignedToUserId: userId || null,
+      });
+    } catch (error) {}
+  };
+
   return (
-    <Select>
+    <Select
+      defaultValue={issue.assignedToUserId || " "}
+      onValueChange={handleValueChange}
+    >
       <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Select a fruit" />
+        <SelectValue placeholder="可分配用户" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Select User</SelectLabel>
+          <SelectLabel>选择用户</SelectLabel>
+          <SelectItem value=" ">为分配</SelectItem>
           {users?.map((user) => (
             <SelectItem key={user.id} value={user.id}>
               {user.name}
@@ -45,5 +49,16 @@ function SelectUser() {
     </Select>
   );
 }
+
+const useUser = () =>
+  useQuery<User[]>({
+    queryKey: ["users"],
+    queryFn: () => axios.get("/api/user").then((res) => res.data),
+    select: (data) => {
+      console.log("data", data);
+      return data;
+    },
+    staleTime: 60 * 1000, // 1 minute cache
+  });
 
 export default SelectUser;
